@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b14">
+<meta name="description" content="Discover 40 AI tools for coding, creativity, writing and productivity.">
+<title>Furqan AI Hub | Discover AI</title>
+<style>
+:root {
+  --bg:#090b14; --panel:#121626; --line:#282d42;
+  --text:#f4f5ff; --muted:#a2a8c2;
+  --purple:#a78bfa; --blue:#67e8f9;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:system-ui,-apple-system,Arial,sans-serif;
+}
+header{
+ padding:34px 18px 28px;text-align:center;
+ background:radial-gradient(ellipse at top,#29204f 0%,#090b14 72%);
+}
+.logo{font-size:13px;letter-spacing:3px;color:var(--blue);font-weight:800}
+h1{font-size:clamp(32px,7vw,55px);margin:15px 0 8px}
+h1 span{color:var(--purple)}
+p{color:var(--muted);line-height:1.6}
+header p{max-width:540px;margin:0 auto 22px}
+.wrap{max-width:1100px;margin:auto;padding:20px 16px}
+.search{
+ width:100%;padding:16px;border:1px solid var(--line);
+ background:var(--panel);border-radius:14px;color:white;
+ font-size:16px;outline:none;
+}
+.search:focus{border-color:var(--purple)}
+.filters{
+ display:flex;gap:9px;flex-wrap:wrap;
+ margin:18px 0 24px;justify-content:center;
+}
+.filters button{
+ border:1px solid var(--line);background:var(--panel);
+ color:var(--text);padding:10px 14px;border-radius:30px;
+ cursor:pointer;
+}
+.filters button.active,.filters button:hover{
+ background:var(--purple);color:#100c20;border-color:var(--purple)
+}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.topline p{font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{
+ background:linear-gradient(145deg,#151a2c,#101321);
+ border:1px solid var(--line);border-radius:17px;padding:19px;
+ display:flex;flex-direction:column;min-height:220px;
+ transition:transform .2s,border-color .2s;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--purple)}
+.cardtop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.emoji{font-size:28px}
+.tag{font-size:11px;color:var(--blue);border:1px solid #294453;
+ padding:5px 8px;border-radius:20px}
+h2{font-size:19px;margin:15px 0 4px}
+.card p{font-size:13px;margin:4px 0 18px}
+.visit{
+ margin-top:auto;display:block;text-align:center;text-decoration:none;
+ padding:11px;border-radius:10px;background:var(--purple);
+ color:#130d24;font-weight:800;font-size:14px;
+}
+.visit:hover{background:var(--blue)}
+.empty{text-align:center;padding:35px;display:none;color:var(--muted)}
+footer{text-align:center;padding:28px 15px;border-top:1px solid var(--line);margin-top:35px}
+footer strong{color:var(--purple)}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">✦ YOUR AI DISCOVERY HUB</div>
+ <h1>Discover <span>AI Tools.</span></h1>
+ <p>40 handpicked tools for coding, creativity, writing,
+ research and productivity — all in one place.</p>
+</header>
+
+<main class="wrap">
+ <input id="search" class="search" type="search"
+ placeholder="🔎 Search tools, categories..." aria-label="Search AI tools">
+
+ <div class="filters" id="filters">
+  <button class="active" data-category="All">All Tools</button>
+  <button data-category="Chat">Chat & Research</button>
+  <button data-category="Image">Images & Design</button>
+  <button data-category="Writing">Writing</button>
+  <button data-category="Video">Video & Audio</button>
+  <button data-category="Code">Coding</button>
+  <button data-category="Productivity">Productivity</button>
+ </div>
+
+ <div class="topline">
+  <h2>Explore the collection</h2>
+  <p id="count" aria-live="polite">40 tools</p>
+ </div>
+ <div class="grid" id="grid"></div>
+ <div class="empty" id="empty">No tools found. Try another search.</div>
+</main>
+
+<footer>
+ <strong>Furqan AI Hub</strong>
+ <p>Built with curiosity & code. Check each tool's terms and pricing.</p>
+</footer>
+
+<script>
+const tools = [
+{name:"ChatGPT",cat:"Chat",icon:"🤖",desc:"AI assistant for ideas, questions and tasks.",url:"https://chatgpt.com/"},
+{name:"Google Gemini",cat:"Chat",icon:"✨",desc:"Google's AI assistant for everyday work.",url:"https://gemini.google.com/"},
+{name:"Claude",cat:"Chat",icon:"🧠",desc:"AI assistant for writing and complex tasks.",url:"https://claude.ai/"},
+{name:"Microsoft Copilot",cat:"Chat",icon:"💠",desc:"AI assistant for answers and productivity.",url:"https://copilot.microsoft.com/"},
+{name:"Perplexity",cat:"Chat",icon:"🔎",desc:"Research answers with linked sources.",url:"https://www.perplexity.ai/"},
+{name:"DeepSeek",cat:"Chat",icon:"🌊",desc:"AI chat and reasoning assistant.",url:"https://www.deepseek.com/"},
+{name:"Poe",cat:"Chat",icon:"💬",desc:"Explore different AI bots in one place.",url:"https://poe.com/"},
+{name:"NotebookLM",cat:"Chat",icon:"📚",desc:"Explore and ask questions about your sources.",url:"https://notebooklm.google/"},
+{name:"Meta AI",cat:"Chat",icon:"🔵",desc:"Meta's AI assistant and creative features.",url:"https://www.meta.ai/"},
+{name:"Hugging Face",cat:"Chat",icon:"🤗",desc:"Discover AI models, datasets and demos.",url:"https://huggingface.co/"},
+
+{name:"Canva",cat:"Image",icon:"🎨",desc:"Design graphics, presentations and social posts.",url:"https://www.canva.com/"},
+{name:"Adobe Firefly",cat:"Image",icon:"🖌️",desc:"Create and edit visuals with generative AI.",url:"https://firefly.adobe.com/"},
+{name:"Leonardo AI",cat:"Image",icon:"🖼️",desc:"Generate creative images and visual assets.",url:"https://leonardo.ai/"},
+{name:"Ideogram",cat:"Image",icon:"💡",desc:"Create images, designs and text-based visuals.",url:"https://ideogram.ai/"},
+{name:"Midjourney",cat:"Image",icon:"🌌",desc:"Explore AI-generated artwork and images.",url:"https://www.midjourney.com/"},
+{name:"Microsoft Designer",cat:"Image",icon:"🧩",desc:"Create designs and graphics with AI.",url:"https://designer.microsoft.com/"},
+{name:"Playground",cat:"Image",icon:"🛝",desc:"Explore AI-powered visual creation.",url:"https://playground.com/"},
+{name:"Remove.bg",cat:"Image",icon:"✂️",desc:"Remove image backgrounds online.",url:"https://www.remove.bg/"},
+{name:"Clipdrop",cat:"Image",icon:"📸",desc:"AI image editing and visual tools.",url:"https://clipdrop.co/"},
+{name:"PhotoRoom",cat:"Image",icon:"🪄",desc:"Create product photos and remove backgrounds.",url:"https://www.photoroom.com/"},
+
+{name:"Grammarly",cat:"Writing",icon:"✍️",desc:"Improve grammar, clarity and writing.",url:"https://www.grammarly.com/"},
+{name:"QuillBot",cat:"Writing",icon:"📝",desc:"Paraphrasing and writing assistance.",url:"https://quillbot.com/"},
+{name:"DeepL Write",cat:"Writing",icon:"🌍",desc:"Improve and refine your writing.",url:"https://www.deepl.com/write"},
+{name:"Jasper",cat:"Writing",icon:"📣",desc:"AI-assisted marketing content creation.",url:"https://www.jasper.ai/"},
+{name:"Copy.ai",cat:"Writing",icon:"📋",desc:"Writing and marketing workflow tools.",url:"https://www.copy.ai/"},
+{name:"Rytr",cat:"Writing",icon:"🖊️",desc:"Generate drafts and writing ideas.",url:"https://rytr.me/"},
+
+{name:"Runway",cat:"Video",icon:"🎬",desc:"AI video generation and creative editing.",url:"https://runwayml.com/"},
+{name:"ElevenLabs",cat:"Video",icon:"🎙️",desc:"AI voices, speech and audio tools.",url:"https://elevenlabs.io/"},
+{name:"HeyGen",cat:"Video",icon:"🗣️",desc:"Create AI avatar videos.",url:"https://www.heygen.com/"},
+{name:"InVideo AI",cat:"Video",icon:"📽️",desc:"Create videos using text prompts.",url:"https://invideo.io/"},
+{name:"Suno",cat:"Video",icon:"🎵",desc:"Create music and songs with AI.",url:"https://suno.com/"},
+{name:"Descript",cat:"Video",icon:"🎧",desc:"Edit audio and video with text-based tools.",url:"https://www.descript.com/"},
+{name:"VEED",cat:"Video",icon:"📹",desc:"Online video editing and subtitle tools.",url:"https://www.veed.io/"},
+{name:"Krisp",cat:"Video",icon:"🔇",desc:"AI noise cancellation for calls.",url:"https://krisp.ai/"},
+
+{name:"GitHub Copilot",cat:"Code",icon:"🐙",desc:"AI coding assistance in supported workflows.",url:"https://github.com/features/copilot"},
+{name:"Cursor",cat:"Code",icon:"⌨️",desc:"AI-powered code editor.",url:"https://cursor.com/"},
+{name:"Replit",cat:"Code",icon:"🚀",desc:"Build and run projects in an online IDE.",url:"https://replit.com/"},
+{name:"Codeium",cat:"Code",icon:"⚡",desc:"AI coding assistance from Windsurf.",url:"https://windsurf.com/"},
+{name:"Bolt",cat:"Code",icon:"🔩",desc:"Build web applications from prompts.",url:"https://bolt.new/"},
+{name:"Lovable",cat:"Code",icon:"💜",desc:"Create web applications with AI assistance.",url:"https://lovable.dev/"},
+
+{name:"Notion",cat:"Productivity",icon:"📓",desc:"Organize notes, projects and work.",url:"https://www.notion.so/"},
+{name:"Gamma",cat:"Productivity",icon:"📊",desc:"Create presentations and documents.",url:"https://gamma.app/"},
+{name:"Zapier",cat:"Productivity",icon:"🔗",desc:"Automate workflows between apps.",url:"https://zapier.com/"},
+{name:"Otter.ai",cat:"Productivity",icon:"🦦",desc:"Transcribe and summarize meetings.",url:"https://otter.ai/"}
+];
+
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+const count = document.getElementById("count");
+const empty = document.getElementById("empty");
+let active = "All";
+
+function render(){
+ const q = search.value.toLowerCase().trim();
+ const filtered = tools.filter(t =>
+  (active === "All" || t.cat === active) &&
+  (t.name+" "+t.desc+" "+t.cat).toLowerCase().includes(q)
+ );
+ grid.innerHTML = filtered.map(t => `
+  <article class="card">
+   <div class="cardtop">
+    <span class="emoji">${t.icon}</span>
+    <span class="tag">${t.cat}</span>
+   </div>
+   <h2>${t.name}</h2>
+   <p>${t.desc}</p>
+   <a class="visit" href="${t.url}" target="_blank"
+      rel="noopener noreferrer">Visit Tool ↗</a>
+  </article>
+ `).join("");
+ count.textContent = filtered.length + " tools";
+ empty.style.display = filtered.length ? "none" : "block";
+}
+search.addEventListener("input",render);
+document.querySelectorAll("#filters button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  active = btn.dataset.category;
+  document.querySelectorAll("#filters button").forEach(b=>
+   b.classList.toggle("active",b===btn)
+  );
+  render();
+ });
+});
+render();
+</script>
+</body>
+</html>
